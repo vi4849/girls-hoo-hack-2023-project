@@ -7,6 +7,7 @@ clock = pygame.time.Clock() #creates a clock object
 screen = pygame.display.set_mode((800,400)) #creates game window
 text_font_1 = pygame.font.Font('graphics/pixel_font.ttf', 30) #creates font we can make a title-text surface with
 text_font_2 = pygame.font.Font('graphics/pixel_font.ttf', 12) #creates font we can make a description-text surface with
+game_active = True #indicates that the game is active; player has not lost yet
 
 #creating variables for background surfaces
 university_surface = pygame.image.load('graphics/university.png').convert() #creates university background surface
@@ -36,39 +37,49 @@ while True: #runs forever (to keep the display open)
         if event.type == pygame.QUIT: #to allow user to quit from the game
             pygame.quit()
             exit()
-        if event.type == pygame.KEYDOWN: #checks to see if a key was pressed
-            if event.key == pygame.K_SPACE: #checks to see if the space key was pressed
-                player_gravity = -20
 
-        if event.type == pygame.KEYUP: #checks to see when the user lets go of the key
-            print("up")
+        if game_active:
+            if event.type == pygame.KEYDOWN: #checks to see if a key was pressed
+                if event.key == pygame.K_SPACE: #checks to see if the space key was pressed
+                    player_gravity = -15
 
-    #sending opening surfaces to display screen
-    screen.blit(university_surface,(0,0)) #sends university background to display screen
-    screen.blit(title_surface,title_rect) #sends game title to display sceen
-    screen.blit(description_surface,description_rect) #sends game description to display screen
+        else: #restarts game if player clicks space key after rosalind and W/C collision
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                game_active = True
+                crick_rect.x = 800
 
-    #updates the gravity variable + rosalind
-    player_gravity+=1
-    rosalind_rect.y += player_gravity 
-    if rosalind_rect.bottom >=375:
-        rosalind_rect.bottom = 375
+    if game_active: #creates the game stage in which it is active; player has not lost yet
+        #sending opening surfaces to display screen
+        screen.blit(university_surface,(0,0)) #sends university background to display screen
+        screen.blit(title_surface,title_rect) #sends game title to display sceen
+        screen.blit(description_surface,description_rect) #sends game description to display screen
 
-    #sends and moves character surfaces on display screen
-    crick_rect.x -= 5 #moves watson 6 pixels to the left every loop
-    if crick_rect.right < -100: #checks if watson walks off screen and returns him to the right of the screen
-        crick_rect.left = 800
-    screen.blit(crick_surface,crick_rect) #sends watson surface to display screen at the rectangle's position
-    screen.blit(rosalind_surface,rosalind_rect) #sends rosalind surface to display screen at the rectangle's position
+        #updates the gravity variable + rosalind
+        player_gravity+=.5
+        rosalind_rect.y += player_gravity
+        if rosalind_rect.bottom >=375:
+            rosalind_rect.bottom = 375
 
-    #alternative code that could be used to see if a user presses space
-    # keys = pygame.key.get_pressed
-    # if keys[pygame.K_SPACE]:
-    #     print('jump')
-        
-    #checks if characters collide
-    if rosalind_rect.colliderect(crick_rect):
-        print('collision')
+        #sends and moves character surfaces on display screen
+        crick_rect.x -= 4 #moves watson 6 pixels to the left every loop
+        if crick_rect.right < -100: #checks if watson walks off screen and returns him to the right of the screen
+            crick_rect.left = 800
+        screen.blit(crick_surface,crick_rect) #sends watson surface to display screen at the rectangle's position
+        screen.blit(rosalind_surface,rosalind_rect) #sends rosalind surface to display screen at the rectangle's position
+
+        #alternative code that could be used to see if a user presses space
+        # keys = pygame.key.get_pressed
+        # if keys[pygame.K_SPACE]:
+        #     print('jump')
+
+        #checks if characters collide
+        if rosalind_rect.colliderect(crick_rect):
+            game_active = False #ends active game stage
+
+    # trivia screen
+    else: #runs if rosalind had collided with watson or crick
+        screen.fill('Red')
+
 
     pygame.display.update() #updates the display
     clock.tick(60) #60 frames/second is the maximum
