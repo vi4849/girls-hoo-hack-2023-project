@@ -1,5 +1,5 @@
 # Rosalind's Double Trouble DNA Hustle
-Rosalind's Double Trouble DNA Hustle is a game created for [Girls Hoo Hack](https://girls-hoo-hack-2023.devpost.com/) using Python and the [Pygame](https://www.pygame.org) library. 
+Rosalind's Double Trouble DNA Hustle is a game created in 48 hours for [Girls Hoo Hack](https://girls-hoo-hack-2023.devpost.com/) using Python and the [Pygame](https://www.pygame.org) library. 
 
 ## Screenshots 
 Coming Soon :) 
