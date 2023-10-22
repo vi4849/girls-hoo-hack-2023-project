@@ -21,9 +21,11 @@ description_surface = text_font_2.render('Help Rosalind Franklin defeat the Doub
 description_rect = description_surface.get_rect(center = (400, 80))
 
 #creating variables for character surfaces and rectangles
-watson_surface = pygame.image.load('graphics/watson-transformed.png').convert_alpha() #creates watson surface
-watson_rect = watson_surface.get_rect(bottomright = (600,375)) #creates rectangle around watson with origin on the bottom right corner
-rosalind_surface = pygame.image.load("graphics/rosalind.png").convert_alpha() # creates rosalind surface
+crick_surface = pygame.image.load('graphics/crick.png').convert_alpha() #creates crick surface
+crick_rect = crick_surface.get_rect(bottomright = (600,375)) #creates rectangle around crick with origin on the bottom right
+watson_surface = pygame.image.load('graphics/watson.png').convert_alpha() #creates watson surface
+watson_rect = watson_surface.get_rect(bottomright = (800,310)) #creates rectangle around watson with origin on the bottom right corner
+rosalind_surface = pygame.image.load("graphics/rosalind1.png").convert_alpha() # creates rosalind surface
 rosalind_rect = rosalind_surface.get_rect(midbottom = (80,375)) #creates rectangle around rosalind with origin on the bottom middle line
 
 
@@ -39,14 +41,14 @@ while True: #runs forever (to keep the display open)
     screen.blit(description_surface,description_rect) #sends game description to display screen
 
     #sends and moves character surfaces on display screen
-    watson_rect.x -= 6 #moves watson 6 pixels to the left every loop
-    if watson_rect.right < -100: #checks if watson walks off screen and returns him to the right of the screen
-        watson_rect.left = 800
-    screen.blit(watson_surface,watson_rect) #sends watson surface to display screen at the rectangle's position
+    crick_rect.x -= 5 #moves watson 6 pixels to the left every loop
+    if crick_rect.right < -100: #checks if watson walks off screen and returns him to the right of the screen
+        crick_rect.left = 800
+    screen.blit(crick_surface,crick_rect) #sends watson surface to display screen at the rectangle's position
     screen.blit(rosalind_surface,rosalind_rect) #sends rosalind surface to display screen at the rectangle's position
 
     #checks if characters collide
-    if rosalind_rect.colliderect(watson_rect):
+    if rosalind_rect.colliderect(crick_rect):
         print('collision')
 
     pygame.display.update() #updates the display
