@@ -22,7 +22,7 @@ description_rect = description_surface.get_rect(center = (400, 80))
 
 #creating variables for character surfaces and rectangles
 crick_surface = pygame.image.load('graphics/crick.png').convert_alpha() #creates crick surface
-crick_rect = crick_surface.get_rect(bottomright = (600,375)) #creates rectangle around crick with origin on the bottom right
+crick_rect = crick_surface.get_rect(bottomright = (600,379)) #creates rectangle around crick with origin on the bottom right
 watson_surface = pygame.image.load('graphics/watson.png').convert_alpha() #creates watson surface
 watson_rect = watson_surface.get_rect(bottomright = (800,310)) #creates rectangle around watson with origin on the bottom right corner
 rosalind_surface = pygame.image.load("graphics/rosalind1.png").convert_alpha() # creates rosalind surface
