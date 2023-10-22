@@ -1,5 +1,6 @@
 import pygame
 from sys import exit
+import random
 
 pygame.init() #initializes pygame
 pygame.display.set_caption('Rosalind Franklin') #sets the game name (at the tab part)
@@ -18,9 +19,12 @@ coal_surface = pygame.image.load('graphics/coal.png').convert() #creates coal ba
 lab_surface = pygame.image.load('graphics/lab.JPG').convert() #creates biology lab background surface
 nobel_surface = pygame.image.load('graphics/awards.jpg').convert() #creates nobel awards background surface
 
-#creating a variable for gravity and a variable for the score
+#creating a variable for gravity, score, and game over
 player_gravity = 0
 score = 0
+game_over = False
+count = 0
+choice = random.randint(1,5)
 
 #creating variables for text surfaces and rectangles
 title_surface = text_font_1.render('Rosalind\'s Double Trouble DNA Hustle', False, 'BLACK') #creates text surface for title
@@ -70,9 +74,10 @@ while True: #runs forever (to keep the display open)
             if event.type == pygame.KEYDOWN: #checks to see if a key was pressed
                 if event.key == pygame.K_SPACE: #checks to see if the space key was pressed
                     player_gravity = -15
+                    choice = random.randint(1,5)
 
         else: #restarts game if player clicks space key after rosalind and W/C collision
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not game_over:
                 game_active = True
                 crick_rect.x = 800
                 watson_rect.x = 750
@@ -144,6 +149,7 @@ while True: #runs forever (to keep the display open)
         if watson_rect.right < 0: #checks if watson walks off screen and returns him to the right of the screen
             watson_rect.left = 800
             score += 1
+            choice = random.randint(1,5)
 
         #alternative code that could be used to see if a user presses space
         # keys = pygame.key.get_pressed
@@ -157,8 +163,175 @@ while True: #runs forever (to keep the display open)
         
 
     # trivia screen
-    #else: #runs if rosalind had collided with watson or crick
-        #screen.fill('Red')
+    if not game_active: #runs if rosalind had collided with watson or crick
+        #use randomly generated choice to display one question
+        if choice == 1:
+            ORANGE = (235, 155, 52)
+            screen.fill(ORANGE)
+            question_surface = text_font_3.render('Even though the two-thirds of the STEM workforce is dominated by men, ', False, 'BLACK')
+            question_surface1 = text_font_3.render('does that mean that women should stop pursuing careers in STEM?', False, 'BLACK')
+            question_surface3 = text_font_3.render('Answer the question correctly to save your career', False, 'BLACK')
+
+            question_rect = description2_surface.get_rect(topleft = (20, 20))
+            screen.blit(question_surface,question_rect)
+            screen.blit(question_surface1, (20,40))
+            screen.blit(question_surface3, (20,60))
+
+            answer_surface = text_font_3.render('Press 1 for Yes', False, 'BLACK') #use keys for user input
+            answer_surface2 = text_font_3.render('Press 2 for No', False, 'BLACK')
+            answer_rect = description2_surface.get_rect(topleft = (20, 100))
+            screen.blit(answer_surface,answer_rect)
+            screen.blit(answer_surface2,(20,130))
+
+            key = pygame.key.get_pressed()
+            if key[pygame.K_2]: #continue game
+                game_active = True
+                start_game = True
+                crick_rect.x = 800
+                watson_rect.x = 750
+            elif key[pygame.K_1]: #restart game
+                game_over = True
+        
+        if choice == 2:
+            COLOR = (52, 235, 162)
+            screen.fill(COLOR)
+            question_surface = text_font_3.render('What can we do to encourage more girls to pursue STEM?', False, 'BLACK')
+            question_surface3 = text_font_3.render('Answer the question correctly to save your career', False, 'BLACK')
+
+            question_rect = description2_surface.get_rect(topleft = (20, 20))
+            screen.blit(question_surface,question_rect)
+            screen.blit(question_surface3, (20,60))
+
+            answer_surface = text_font_3.render('Press 1 for be a role model for young girls to look up to ', False, 'BLACK')
+            answer_surface2 = text_font_3.render('Press 2 for expose girls to STEM from a young age', False, 'BLACK')
+            answer_surface3 = text_font_3.render('Press 3 for all of the above', False, 'BLACK')
+            answer_surface4 = text_font_3.render('Press 4 for none of the above', False, 'BLACK')
+            answer_rect = description2_surface.get_rect(topleft = (20, 100))
+            screen.blit(answer_surface,answer_rect)
+            screen.blit(answer_surface2,(20,130))
+            screen.blit(answer_surface3,(20,160))
+            screen.blit(answer_surface4,(20,190))
+
+
+            key = pygame.key.get_pressed()
+            if key[pygame.K_3]:
+                game_active = True
+                start_game = True
+                crick_rect.x = 800
+                watson_rect.x = 750
+            elif key[pygame.K_1] or key[pygame.K_2] or key[pygame.K_4]:
+                game_over = True
+        
+        
+        if choice == 3:
+            COLOR = (52, 195, 235)
+            screen.fill(COLOR)
+            question_surface = text_font_3.render('What is the point of female empowerment?', False, 'BLACK')
+            question_surface3 = text_font_3.render('Answer the question correctly to save your career', False, 'BLACK')
+
+            question_rect = description2_surface.get_rect(topleft = (20, 20))
+            screen.blit(question_surface,question_rect)
+            screen.blit(question_surface3, (20,60))
+
+            answer_surface = text_font_3.render('Press 1 for to encourage women to pursue any career they want ', False, 'BLACK')
+            answer_surface2 = text_font_3.render('Press 2 for to raise the status of women through education', False, 'BLACK')
+            answer_surface3 = text_font_3.render('Press 3 for to accept and value female viewpoints', False, 'BLACK')
+            answer_surface4 = text_font_3.render('Press 4 for all of the above', False, 'BLACK')
+            answer_rect = description2_surface.get_rect(topleft = (20, 100))
+            screen.blit(answer_surface,answer_rect)
+            screen.blit(answer_surface2,(20,130))
+            screen.blit(answer_surface3,(20,160))
+            screen.blit(answer_surface4,(20,190))
+
+            key = pygame.key.get_pressed()
+            if key[pygame.K_4]:
+                game_active = True
+                start_game = True
+                crick_rect.x = 800
+                watson_rect.x = 750
+            elif key[pygame.K_1] or key[pygame.K_2] or key[pygame.K_3]:
+                game_over = True
+
+        if choice == 4:
+            COLOR = (104, 52, 235)
+            screen.fill(COLOR)
+            question_surface = text_font_3.render('Which occupation has the smallest gender pay gap?', False, 'BLACK')
+            question_surface3 = text_font_3.render('Answer the question correctly to save your career', False, 'BLACK')
+
+            question_rect = description2_surface.get_rect(topleft = (20, 20))
+            screen.blit(question_surface,question_rect)
+            screen.blit(question_surface3, (20,60))
+
+            answer_surface = text_font_3.render('Press 1 for bartenders ', False, 'BLACK')
+            answer_surface2 = text_font_3.render('Press 2 for physical therapists', False, 'BLACK')
+            answer_surface3 = text_font_3.render('Press 3 for office clerks', False, 'BLACK')
+            answer_surface4 = text_font_3.render('Press 4 for cashiers', False, 'BLACK')
+            answer_rect = description2_surface.get_rect(topleft = (20, 100))
+            screen.blit(answer_surface,answer_rect)
+            screen.blit(answer_surface2,(20,130))
+            screen.blit(answer_surface3,(20,160))
+            screen.blit(answer_surface4,(20,190))
+
+            key = pygame.key.get_pressed()
+            if key[pygame.K_2]:
+                game_active = True
+                start_game = True
+                crick_rect.x = 800
+                watson_rect.x = 750
+            elif key[pygame.K_1] or key[pygame.K_3] or key[pygame.K_4]:
+                game_over = True
+
+
+        
+        if choice == 5:
+            COLOR = (235, 52, 177)
+            screen.fill(COLOR)
+            question_surface = text_font_3.render('Fill in the blank: Women used to earn __ for every dollar that a man made, but now they make __ for every dollar that a man makes', False, 'BLACK')
+            question_surface3 = text_font_3.render('Answer the question correctly to save your career', False, 'BLACK')
+
+            question_rect = description2_surface.get_rect(topleft = (20, 20))
+            screen.blit(question_surface,question_rect)
+            screen.blit(question_surface3, (20,60))
+
+            answer_surface = text_font_3.render('Press 1 for 60 cents and 82 cents', False, 'BLACK')
+            answer_surface2 = text_font_3.render('Press 2 for 45 cents and  92 cents', False, 'BLACK')
+            answer_surface3 = text_font_3.render('Press 3 for 38 cents and 85 cents', False, 'BLACK')
+            answer_surface4 = text_font_3.render('Press 4 for 59 cents and 70 cents', False, 'BLACK')
+            answer_rect = description2_surface.get_rect(topleft = (20, 100))
+            screen.blit(answer_surface,answer_rect)
+            screen.blit(answer_surface2,(20,130))
+            screen.blit(answer_surface3,(20,160))
+            screen.blit(answer_surface4,(20,190))
+
+
+            key = pygame.key.get_pressed()
+            if key[pygame.K_1]:
+                game_active = True
+                start_game = True
+                crick_rect.x = 800
+                watson_rect.x = 750
+            elif key[pygame.K_3] or key[pygame.K_2] or key[pygame.K_4]:
+                game_over = True
+
+
+
+        if game_over:
+            screen.fill('Red')
+            question_surface = text_font_3.render('Oh no! Watson and Crick have stolen your work.', False, 'BLACK')
+            question_rect = description2_surface.get_rect(topleft = (20, 20))
+            answer_surface2 = text_font_3.render('Press r to restart', False, 'BLACK')
+            answer_rect = description2_surface.get_rect(topleft = (20, 80))
+            screen.blit(answer_surface2,answer_rect)
+            screen.blit(question_surface,question_rect)
+            key = pygame.key.get_pressed()
+            if key[pygame.K_r]:
+                game_over = False
+                game_active = True
+                start_game = False
+                crick_rect.x = 800
+                watson_rect.x = 750
+                score = 0
+
 
 
     pygame.display.update() #updates the display
