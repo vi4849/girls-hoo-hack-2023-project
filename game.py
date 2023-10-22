@@ -8,12 +8,24 @@ screen = pygame.display.set_mode((800,400)) #creates game window
 text_font_1 = pygame.font.Font('graphics/pixel_font.ttf', 30) #creates font we can make a title-text surface with
 text_font_2 = pygame.font.Font('graphics/pixel_font.ttf', 12) #creates font we can make a description-text surface with
 
-university_surface = pygame.image.load('graphics/university.png') #creates university background surface
-coal_surface = pygame.image.load('graphics/coal.png') #creates coal background surface
-lab_surface = pygame.image.load('graphics/lab.JPG') #creates biology lab background surface
+#creating variables for background surfaces
+university_surface = pygame.image.load('graphics/university.png').convert() #creates university background surface
+coal_surface = pygame.image.load('graphics/coal.png').convert() #creates coal background surface
+lab_surface = pygame.image.load('graphics/lab.JPG').convert() #creates biology lab background surface
+
+#creating variables for text surfaces and rectangles
 title_surface = text_font_1.render('Rosalind\'s Double Trouble DNA Hustle', False, 'BLACK') #creates text surface for title
-description_surface = text_font_2.render('Help Rosalin Franklin defeat the Double Trouble Duo '
-                                         'Watson and Crick on her journey to discover the molecular structure of DNA', False, 'BLACK') #creates text surface for game description
+title_rect = title_surface.get_rect(center = (400,50))
+description_surface = text_font_2.render('Help Rosalind Franklin defeat the Double Trouble Duo, '
+                                         'Watson and Crick, on her journey to discover the molecular structure of DNA', False, 'BLACK') #creates text surface for game description
+description_rect = description_surface.get_rect(center = (400, 80))
+
+#creating variables for character surfaces and rectangles
+watson_surface = pygame.image.load('graphics/watson-transformed.png').convert_alpha() #creates watson surface
+watson_rect = watson_surface.get_rect(bottomright = (600,375)) #creates rectangle around watson with origin on the bottom right corner
+rosalind_surface = pygame.image.load("graphics/rosalind.png").convert_alpha() # creates rosalind surface
+rosalind_rect = rosalind_surface.get_rect(midbottom = (80,375)) #creates rectangle around rosalind with origin on the bottom middle line
+
 
 while True: #runs forever (to keep the display open)
     for event in pygame.event.get():
@@ -21,9 +33,21 @@ while True: #runs forever (to keep the display open)
             pygame.quit()
             exit()
 
+    #sending opening surfaces to display screen
     screen.blit(university_surface,(0,0)) #sends university background to display screen
-    screen.blit(title_surface,(140,50)) #sends game title to display sceen
-    screen.blit(description_surface,(10, 90))
+    screen.blit(title_surface,title_rect) #sends game title to display sceen
+    screen.blit(description_surface,description_rect) #sends game description to display screen
+
+    #sends and moves character surfaces on display screen
+    watson_rect.x -= 6 #moves watson 6 pixels to the left every loop
+    if watson_rect.right < -100: #checks if watson walks off screen and returns him to the right of the screen
+        watson_rect.left = 800
+    screen.blit(watson_surface,watson_rect) #sends watson surface to display screen at the rectangle's position
+    screen.blit(rosalind_surface,rosalind_rect) #sends rosalind surface to display screen at the rectangle's position
+
+    #checks if characters collide
+    if rosalind_rect.colliderect(watson_rect):
+        print('collision')
 
     pygame.display.update() #updates the display
     clock.tick(60) #60 frames/second is the maximum
