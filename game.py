@@ -24,7 +24,7 @@ description_rect = description_surface.get_rect(center = (400, 80))
 crick_surface = pygame.image.load('graphics/crick.png').convert_alpha() #creates crick surface
 crick_rect = crick_surface.get_rect(bottomright = (600,375)) #creates rectangle around crick with origin on the bottom right
 watson_surface = pygame.image.load('graphics/watson.png').convert_alpha() #creates watson surface
-watson_rect = watson_surface.get_rect(bottomright = (800,310)) #creates rectangle around watson with origin on the bottom right corner
+watson_rect = watson_surface.get_rect(bottomright = (1500,310)) #creates rectangle around watson with origin on the bottom right corner
 rosalind_surface = pygame.image.load("graphics/rosalind1.png").convert_alpha() # creates rosalind surface
 rosalind_rect = rosalind_surface.get_rect(midbottom = (80,375)) #creates rectangle around rosalind with origin on the bottom middle line
 
@@ -55,11 +55,18 @@ while True: #runs forever (to keep the display open)
         rosalind_rect.bottom = 375
 
     #sends and moves character surfaces on display screen
-    crick_rect.x -= 5 #moves watson 6 pixels to the left every loop
-    if crick_rect.right < -100: #checks if watson walks off screen and returns him to the right of the screen
+    crick_rect.x -= 5 #moves crick 6 pixels to the left every loop
+    watson_rect.x -= 2 #moves crick to the left every time the frame is updated
+    if crick_rect.right < -100: #checks if crick walks off screen and returns him to the right of the screen
         crick_rect.left = 800
-    screen.blit(crick_surface,crick_rect) #sends watson surface to display screen at the rectangle's position
+    if watson_rect.right<-100:
+        watson_rect.left = 800
+    screen.blit(watson_surface,watson_rect) #adds watson
+    screen.blit(crick_surface,crick_rect) #sends crcik surface to display screen at the rectangle's position
     screen.blit(rosalind_surface,rosalind_rect) #sends rosalind surface to display screen at the rectangle's position
+
+
+
 
     #alternative code that could be used to see if a user presses space
     # keys = pygame.key.get_pressed
