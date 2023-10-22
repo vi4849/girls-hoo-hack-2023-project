@@ -14,23 +14,27 @@ university_surface = pygame.image.load('graphics/university.png').convert() #cre
 coal_surface = pygame.image.load('graphics/coal.png').convert() #creates coal background surface
 lab_surface = pygame.image.load('graphics/lab.JPG').convert() #creates biology lab background surface
 
+#creating a variable for gravity and a variable for the score
+player_gravity = 0
+score = 0
+
 #creating variables for text surfaces and rectangles
 title_surface = text_font_1.render('Rosalind\'s Double Trouble DNA Hustle', False, 'BLACK') #creates text surface for title
 title_rect = title_surface.get_rect(center = (400,50))
 description_surface = text_font_2.render('Help Rosalind Franklin defeat the Double Trouble Duo, '
                                          'Watson and Crick, on her journey to discover the molecular structure of DNA', False, 'BLACK') #creates text surface for game description
 description_rect = description_surface.get_rect(center = (400, 80))
+score_surface = text_font_2.render('Score: ' + f'{score}', False, 'BLACK')
+score_rect = score_surface.get_rect(center = (400, 100))
 
 #creating variables for character surfaces and rectangles
 crick_surface = pygame.image.load('graphics/crick.png').convert_alpha() #creates crick surface
 crick_rect = crick_surface.get_rect(bottomright = (600,379)) #creates rectangle around crick with origin on the bottom right
 watson_surface = pygame.image.load('graphics/watson.png').convert_alpha() #creates watson surface
-watson_rect = watson_surface.get_rect(bottomright = (800,310)) #creates rectangle around watson with origin on the bottom right corner
+watson_rect = watson_surface.get_rect(bottomright = (1000,280)) #creates rectangle around watson with origin on the bottom right corner
 rosalind_surface = pygame.image.load("graphics/rosalind1.png").convert_alpha() # creates rosalind surface
 rosalind_rect = rosalind_surface.get_rect(midbottom = (80,375)) #creates rectangle around rosalind with origin on the bottom middle line
 
-#creating a variable for gravity
-player_gravity = 0
 
 while True: #runs forever (to keep the display open)
     for event in pygame.event.get():
@@ -47,12 +51,16 @@ while True: #runs forever (to keep the display open)
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_active = True
                 crick_rect.x = 800
+                watson_rect.x = 750
+                score = 0
 
     if game_active: #creates the game stage in which it is active; player has not lost yet
         #sending opening surfaces to display screen
         screen.blit(university_surface,(0,0)) #sends university background to display screen
         screen.blit(title_surface,title_rect) #sends game title to display sceen
         screen.blit(description_surface,description_rect) #sends game description to display screen
+        score_surface = text_font_2.render('Score: ' + f'{score}', False, 'BLACK')
+        screen.blit(score_surface,score_rect)
 
         #updates the gravity variable + rosalind
         player_gravity+=.5
@@ -61,10 +69,17 @@ while True: #runs forever (to keep the display open)
             rosalind_rect.bottom = 375
 
         #sends and moves character surfaces on display screen
-        crick_rect.x -= 4 #moves watson 6 pixels to the left every loop
-        if crick_rect.right < -100: #checks if watson walks off screen and returns him to the right of the screen
+        crick_rect.x -= 3 #moves crick 6 pixels to the left every loop
+        watson_rect.x -= 1  
+        if crick_rect.right < 0: #checks if watson walks off screen and returns him to the right of the screen
             crick_rect.left = 800
-        screen.blit(crick_surface,crick_rect) #sends watson surface to display screen at the rectangle's position
+            score += 1
+        if watson_rect.right < 0: #checks if watson walks off screen and returns him to the right of the screen
+            watson_rect.left = 800
+            score += 1
+            
+        screen.blit(watson_surface,watson_rect)
+        screen.blit(crick_surface,crick_rect) #sends crick surface to display screen at the rectangle's position
         screen.blit(rosalind_surface,rosalind_rect) #sends rosalind surface to display screen at the rectangle's position
 
         #alternative code that could be used to see if a user presses space
@@ -73,8 +88,10 @@ while True: #runs forever (to keep the display open)
         #     print('jump')
 
         #checks if characters collide
-        if rosalind_rect.colliderect(crick_rect):
+        if rosalind_rect.colliderect(crick_rect) or rosalind_rect.colliderect(watson_rect):
             game_active = False #ends active game stage
+
+        
 
     # trivia screen
     else: #runs if rosalind had collided with watson or crick
