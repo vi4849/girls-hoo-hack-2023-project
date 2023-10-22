@@ -8,6 +8,7 @@ screen = pygame.display.set_mode((800,400)) #creates game window
 text_font_1 = pygame.font.Font('graphics/pixel_font.ttf', 30) #creates font we can make a title-text surface with
 text_font_2 = pygame.font.Font('graphics/pixel_font.ttf', 12) #creates font we can make a description-text surface with
 game_active = True #indicates that the game is active; player has not lost yet
+opening_level = True #variable to run opening screen
 
 #creating variables for background surfaces
 university_surface = pygame.image.load('graphics/university.png').convert() #creates university background surface
