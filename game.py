@@ -28,17 +28,31 @@ watson_rect = watson_surface.get_rect(bottomright = (800,310)) #creates rectangl
 rosalind_surface = pygame.image.load("graphics/rosalind1.png").convert_alpha() # creates rosalind surface
 rosalind_rect = rosalind_surface.get_rect(midbottom = (80,375)) #creates rectangle around rosalind with origin on the bottom middle line
 
+#creating a variable for gravity
+player_gravity = 0
 
 while True: #runs forever (to keep the display open)
     for event in pygame.event.get():
         if event.type == pygame.QUIT: #to allow user to quit from the game
             pygame.quit()
             exit()
+        if event.type == pygame.KEYDOWN: #checks to see if a key was pressed
+            if event.key == pygame.K_SPACE: #checks to see if the space key was pressed
+                player_gravity = -20
+
+        if event.type == pygame.KEYUP: #checks to see when the user lets go of the key
+            print("up")
 
     #sending opening surfaces to display screen
     screen.blit(university_surface,(0,0)) #sends university background to display screen
     screen.blit(title_surface,title_rect) #sends game title to display sceen
     screen.blit(description_surface,description_rect) #sends game description to display screen
+
+    #updates the gravity variable + rosalind
+    player_gravity+=1
+    rosalind_rect.y += player_gravity 
+    if rosalind_rect.bottom >=375:
+        rosalind_rect.bottom = 375
 
     #sends and moves character surfaces on display screen
     crick_rect.x -= 5 #moves watson 6 pixels to the left every loop
@@ -47,6 +61,11 @@ while True: #runs forever (to keep the display open)
     screen.blit(crick_surface,crick_rect) #sends watson surface to display screen at the rectangle's position
     screen.blit(rosalind_surface,rosalind_rect) #sends rosalind surface to display screen at the rectangle's position
 
+    #alternative code that could be used to see if a user presses space
+    # keys = pygame.key.get_pressed
+    # if keys[pygame.K_SPACE]:
+    #     print('jump')
+        
     #checks if characters collide
     if rosalind_rect.colliderect(crick_rect):
         print('collision')
